@@ -16,7 +16,7 @@ Environment::Environment(QWidget *parent)
     startXVelo = 0.05;
     startYVelo = 0.05;
     boidQuantity = 50;
-    predatorQuantity = 2;
+    predatorQuantity = 1;
     obstacleQuantity = 5;
 
     drawingDelay = 10; //co ile ms odswieza mape
