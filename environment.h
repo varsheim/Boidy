@@ -38,6 +38,7 @@ private:
     void draw();
     void drawBoidSwarm(QList<Boid *> *swarm);
     void drawPredatorSwarm(QList<Predator *> *swarm);
+    void drawObstacles(QList<Obstacle *> *obstacles);
 
     void createBoidSwarmOnStart(int quantity, float startXPos, float startYPos, float startXVelo, float startYVelo);
     void createPredatorSwarmOnStart(int quantity, float startXPos, float startYPos, float startXVelo, float startYVelo);

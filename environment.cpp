@@ -188,6 +188,24 @@ void Environment::updateEnvironment()
     updateGL(); //rysuj wszystko
 }
 
+void Environment::drawObstacles(QList<Obstacle *> *obstacles)
+{
+    for(int i = 0; i < obstacles->length(); i++){
+        qglColor(Qt::white);
+        glBegin(GL_QUADS);
+        //wymiary mapy 4x4!
+            glVertex2f((obstacles->at(i)->getPosition() - obstacles->at(i)->getSize()).x,
+                       (obstacles->at(i)->getPosition() - obstacles->at(i)->getSize()).y); //lewa dol
+            glVertex2f((obstacles->at(i)->getPosition() - obstacles->at(i)->getSize()).x,
+                       (obstacles->at(i)->getPosition() + obstacles->at(i)->getSize()).y); //lewa gora
+            glVertex2f((obstacles->at(i)->getPosition() + obstacles->at(i)->getSize()).x,
+                       (obstacles->at(i)->getPosition() + obstacles->at(i)->getSize()).y); //prawa gora
+            glVertex2f((obstacles->at(i)->getPosition() + obstacles->at(i)->getSize()).x,
+                       (obstacles->at(i)->getPosition() - obstacles->at(i)->getSize()).y); //prawa dol
+        glEnd();
+    }
+}
+
 void Environment::drawBoidSwarm(QList<Boid *> *boidSwarm)
 {
     for(int i = 0; i < boidSwarm->length(); i++){
@@ -240,5 +258,6 @@ void Environment::draw()
     //*** RYSOWANIE PREDATOROW ***
     drawPredatorSwarm(predatorSwarm);
 
-    //TODO rysowanie przeszkod
+    //*** RYSOWANIE PRZESZKOD ***
+    drawObstacles(obstacles);
 }
