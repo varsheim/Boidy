@@ -41,7 +41,7 @@ private:
 
     void createBoidSwarmOnStart(int quantity, float startXPos, float startYPos, float startXVelo, float startYVelo);
     void createPredatorSwarmOnStart(int quantity, float startXPos, float startYPos, float startXVelo, float startYVelo);
-    void createObstaclesOnStart(int quantity);
+    void createObstaclesOnStart(int quantity); //DO DOKONCZENIA!
 
     QList<Boid *> *boidSwarm;
     QList<Predator *> *predatorSwarm;
