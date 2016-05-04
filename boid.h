@@ -17,7 +17,6 @@ public:
     int getNeighboursAmount();
     Velocity2D getNeighboursAverageVelocity();
     float getNeighboursAverageDistance();
-
     QList<Boid *> getNeighbours();
     QList<Predator *> getClosePredators();
 
@@ -36,7 +35,6 @@ private:
     float minDistance;
     float predatorMinDistance;
     float predatorMinDistanceFactor;
-
     float predatorSightDistance;
     float predatorSightAngle;
 
