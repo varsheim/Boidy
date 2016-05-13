@@ -4,6 +4,7 @@
 #include <QtCore/qmath.h>
 
 #include "typedefs.h"
+#include "obstacle.h"
 
 class Creature
 {
@@ -24,7 +25,9 @@ public:
     float getSightDistance();
     float getSightAngle();
     float getVelocityAngle();
+    QList<Obstacle *> getCloseObstacles();
 
+    QList<Obstacle *> findObstacles(QList<Obstacle *> *allObstacles);
     virtual Velocity2D calculateVelocity() = 0;
     void updateVelocity();
 
@@ -55,6 +58,10 @@ protected:
 
     void checkMaxVelocity();
     void addRandomNoise(Velocity2D&);
+
+    QList<Obstacle *> *closeObstacles;
+
+    void calculateVelocityBasedOnObstacles(Velocity2D&);
 
 private:
     void checkBorders(int, int);

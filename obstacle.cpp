@@ -1,8 +1,11 @@
 #include "obstacle.h"
 
-Obstacle::Obstacle()
+Obstacle::Obstacle(Position2D position)
 {
+    this->position = position;
 
+    this->size.xSize = 0.04;
+    this->size.ySize = 0.04;
 }
 
 Obstacle::~Obstacle()
