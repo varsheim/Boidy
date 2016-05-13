@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     creature.cpp \
     boid.cpp \
     predator.cpp \
-    obstacle.cpp
+    obstacle.cpp \
+    algorithm.cpp
 
 HEADERS  += mainwindow.h \
     environment.h \
@@ -27,6 +28,7 @@ HEADERS  += mainwindow.h \
     typedefs.h \
     boid.h \
     predator.h \
-    obstacle.h
+    obstacle.h \
+    algorithm.h
 
 FORMS    += mainwindow.ui
