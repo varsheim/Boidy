@@ -5,9 +5,9 @@ Creature::Creature()
 {
     closeObstacles = new QList<Obstacle *>;
 
-    obstacleSightDistance = 0.70;
-    obstacleMinDistance = 0.1;
-    obstacleMinDistanceFactor = 0.03;
+    obstacleSightDistance = 0.20;
+    obstacleMinDistance = 0.05;
+    obstacleMinDistanceFactor = 0.003;
 }
 
 Creature::~Creature()
@@ -143,8 +143,9 @@ void Creature::calculateVelocityBasedOnObstacles(Velocity2D &futureVelocity)
 
 //        tempDistance = qSqrt(qPow(positionDifference.x, 2) +
 //                             qPow(positionDifference.y, 2));
-        tempDistance = qPow(positionDifference.x, 2)
-                       + qPow(positionDifference.y, 2);
+        //odleglosc w trzeciej potedze do polepszenia dzialania
+        tempDistance = qPow((qPow(positionDifference.x, 2)
+                       + qPow(positionDifference.y, 2)), 1.5);
         float distanceRatio = obstacleMinDistance / tempDistance;
 
         futureVelocity -= positionDifference * obstacleMinDistanceFactor * (distanceRatio - 1); //przeciazone operatory
