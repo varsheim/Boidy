@@ -13,7 +13,7 @@ Predator::Predator(Position2D position, Velocity2D velocity)
     sightDistance = 2;
     sightAngle = 0.7 * 3.1416;
 
-    velocityLimitFactor = 0.80;
+    velocityLimitFactor = 0.70;
     maxVelocity = 0.25;
     randomFactor = 0.04;
     targetChaseFactor = 0.02;
@@ -75,9 +75,13 @@ Velocity2D Predator::calculateVelocity()
     // *** PREDATOR GONI NAJBLIZSZEGO BOIDA ***
     calculateVelocityBasedOnTarget(futureVelocity);
 
+    // *** PREDATOR OMIJA PRZESZKODY ***
+    calculateVelocityBasedOnObstacles(futureVelocity);
+
     // *** LOSOWE ZAKLOCENIA ***
     addRandomNoise(futureVelocity);
 
+    // *** OGRANICZ PREDKOSC ***
     checkMaxVelocity();
 
     return velocity;

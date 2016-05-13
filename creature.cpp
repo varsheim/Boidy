@@ -4,6 +4,10 @@
 Creature::Creature()
 {
     closeObstacles = new QList<Obstacle *>;
+
+    obstacleSightDistance = 0.70;
+    obstacleMinDistance = 0.1;
+    obstacleMinDistanceFactor = 0.03;
 }
 
 Creature::~Creature()
@@ -109,7 +113,7 @@ QList<Obstacle *> Creature::findObstacles(QList<Obstacle *> *allObstacles)
         positionDifference = allObstacles->at(i)->getPosition() - position;
         tempDistance = qSqrt(qPow(positionDifference.x, 2) +
                              qPow(positionDifference.y, 2));
-        if(tempDistance < sightDistance){
+        if(tempDistance < obstacleSightDistance){
             //jesli Predator jest w promieniu rownym sightDistance
             //sprawdzam dalej czy Predator znajduje sie w kacie widzenia
             tempVelocityAngle = qAtan2(velocity.yVelocity, velocity.xVelocity);
@@ -122,4 +126,27 @@ QList<Obstacle *> Creature::findObstacles(QList<Obstacle *> *allObstacles)
     }
 
     return *closeObstacles;
+}
+
+void Creature::calculateVelocityBasedOnObstacles(Velocity2D &futureVelocity)
+{
+    if(closeObstacles->isEmpty()) {
+        return;
+    }
+
+    for(int i = 0; i < closeObstacles->length(); i++) {
+        Position2D obstaclePosition = closeObstacles->at(i)->getPosition();
+        Position2D positionDifference;
+        positionDifference = obstaclePosition - position; //przeciazony operator odejmowania
+
+        static float tempDistance = 0;
+
+//        tempDistance = qSqrt(qPow(positionDifference.x, 2) +
+//                             qPow(positionDifference.y, 2));
+        tempDistance = qPow(positionDifference.x, 2)
+                       + qPow(positionDifference.y, 2);
+        float distanceRatio = obstacleMinDistance / tempDistance;
+
+        futureVelocity -= positionDifference * obstacleMinDistanceFactor * (distanceRatio - 1); //przeciazone operatory
+    }
 }
