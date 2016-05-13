@@ -6,7 +6,7 @@
 class Obstacle
 {
 public:
-    Obstacle();
+    Obstacle(Position2D position);
     ~Obstacle();
 
     Position2D getPosition();

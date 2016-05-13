@@ -16,8 +16,8 @@ Environment::Environment(QWidget *parent)
     startXVelo = 0.05;
     startYVelo = 0.05;
     boidQuantity = 50;
-    predatorQuantity = 2;
-    obstacleQuantity = 5;
+    predatorQuantity = 1;
+    obstacleQuantity = 10;
 
     drawingDelay = 10; //co ile ms odswieza mape
     calculatingDelay = 10; // co ile ms przelicza obiekty
@@ -99,7 +99,14 @@ void Environment::createPredatorSwarmOnStart(int quantity,
 
 void Environment::createObstaclesOnStart(int quantity)
 {
+    Position2D tempPosition;
+
     obstacles = new QList<Obstacle *>;
+    for(int i = 0; i < quantity; i++){
+        tempPosition.x = (qrand() % 200 - 100) / 50.0;
+        tempPosition.y = (qrand() % 200 - 100) / 50.0;
+        obstacles->append(new Obstacle(tempPosition));
+    }
 }
 
 QSize Environment::minimumSizeHint() const
@@ -157,6 +164,7 @@ void Environment::updateCreatures()
     for(int i = 0; i < boidSwarm->length(); i++){
         boidSwarm->at(i)->findNeighbours(boidSwarm);
         boidSwarm->at(i)->findPredators(predatorSwarm);
+        boidSwarm->at(i)->findObstacles(obstacles);
     }
 
     for(int i = 0; i < boidSwarm->length(); i++){
@@ -165,6 +173,10 @@ void Environment::updateCreatures()
 
     for(int i = 0; i < predatorSwarm->length(); i++){
         predatorSwarm->at(i)->findTarget(boidSwarm);
+        predatorSwarm->at(i)->findObstacles(obstacles);
+    }
+
+    for(int i = 0; i < predatorSwarm->length(); i++){
         predatorSwarm->at(i)->calculateVelocity(); //obliczenie przyszlej predkosci
     }
 }
@@ -176,9 +188,9 @@ void Environment::updateEnvironment()
         boidSwarm->at(i)->updatePosition(height(), width());
     }
     //wyrzucanie wybranego info na ekran
-    emit sendNeighboursAmount(boidSwarm->at(0)->getClosePredators().length(),
-                              boidSwarm->at(1)->getClosePredators().length(),
-                              boidSwarm->at(2)->getClosePredators().length());
+    emit sendNeighboursAmount(boidSwarm->at(0)->getCloseObstacles().length(),
+                              boidSwarm->at(1)->getCloseObstacles().length(),
+                              boidSwarm->at(2)->getCloseObstacles().length());
 
     for(int i = 0; i < predatorSwarm->length(); i++){
         predatorSwarm->at(i)->updateVelocity(); //ustawienie velocity = futureVelocity
@@ -186,6 +198,17 @@ void Environment::updateEnvironment()
     }
 
     updateGL(); //rysuj wszystko
+}
+
+void Environment::drawObstacles(QList<Obstacle *> *obstacles)
+{
+    for(int i = 0; i < obstacles->length(); i++){
+        qglColor(Qt::white);
+            glRectf((obstacles->at(i)->getPosition() - obstacles->at(i)->getSize()).x,
+                    (obstacles->at(i)->getPosition() - obstacles->at(i)->getSize()).y,
+                    (obstacles->at(i)->getPosition() + obstacles->at(i)->getSize()).x,
+                    (obstacles->at(i)->getPosition() + obstacles->at(i)->getSize()).y);
+    }
 }
 
 void Environment::drawBoidSwarm(QList<Boid *> *boidSwarm)
@@ -240,5 +263,6 @@ void Environment::draw()
     //*** RYSOWANIE PREDATOROW ***
     drawPredatorSwarm(predatorSwarm);
 
-    //TODO rysowanie przeszkod
+    //*** RYSOWANIE PRZESZKOD ***
+    drawObstacles(obstacles);
 }

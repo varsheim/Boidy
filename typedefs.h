@@ -1,16 +1,36 @@
 #ifndef TYPEDEFS
 #define TYPEDEFS
 
+struct Size2D
+{
+    float xSize;
+    float ySize;
+};
+
 struct Position2D
 {
     float x;
     float y;
 
     //***PRZECIAZANIE OPERATOROW***
+    Position2D operator+(const Size2D& size) {
+        Position2D position;
+        position.x = this->x + size.xSize;
+        position.y = this->y + size.ySize;
+        return position;
+    }
+
     Position2D operator-(const Position2D& pos) {
         Position2D position;
         position.x = this->x - pos.x;
         position.y = this->y - pos.y;
+        return position;
+    }
+
+    Position2D operator-(const Size2D& size) {
+        Position2D position;
+        position.x = this->x - size.xSize;
+        position.y = this->y - size.ySize;
         return position;
     }
 
@@ -84,11 +104,6 @@ struct Velocity2D
     //***KONIEC PRZECIAZANIA***
 };
 
-struct Size2D
-{
-    float xSize;
-    float ySize;
-};
 
 #endif // TYPEDEFS
 

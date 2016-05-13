@@ -3,12 +3,16 @@
 
 Creature::Creature()
 {
+    closeObstacles = new QList<Obstacle *>;
 
+    obstacleSightDistance = 0.20;
+    obstacleMinDistance = 0.05;
+    obstacleMinDistanceFactor = 0.003;
 }
 
 Creature::~Creature()
 {
-
+    delete closeObstacles;
 }
 
 void Creature::setSize(float size)
@@ -51,6 +55,11 @@ Velocity2D Creature::getVelocity()
     return velocity;
 }
 
+QList<Obstacle *> Creature::getCloseObstacles()
+{
+    return *closeObstacles;
+}
+
 void Creature::updatePosition(int height, int width)
 {
     this->position.x += 0.1*this->velocity.xVelocity;
@@ -91,4 +100,54 @@ void Creature::addRandomNoise(Velocity2D &futureVelocity)
 void Creature::updateVelocity()
 {
     velocity = futureVelocity;
+}
+
+QList<Obstacle *> Creature::findObstacles(QList<Obstacle *> *allObstacles)
+{
+    closeObstacles->clear();
+    static float tempDistance, tempVelocityAngle, tempNeighbourAngle, tempSightAngle;
+    Position2D positionDifference;
+
+    for (int i = 0; i < allObstacles->length(); i++){ //przelot po wszystkich predatorach, wyznaczenie bliskich predatorow
+        //obliczenie odleglosci do kolejnego Predatora
+        positionDifference = allObstacles->at(i)->getPosition() - position;
+        tempDistance = qSqrt(qPow(positionDifference.x, 2) +
+                             qPow(positionDifference.y, 2));
+        if(tempDistance < obstacleSightDistance){
+            //jesli Predator jest w promieniu rownym sightDistance
+            //sprawdzam dalej czy Predator znajduje sie w kacie widzenia
+            tempVelocityAngle = qAtan2(velocity.yVelocity, velocity.xVelocity);
+            tempNeighbourAngle = qAtan2(positionDifference.y, positionDifference.x);
+            tempSightAngle = qAbs(tempVelocityAngle - tempNeighbourAngle);
+            if(tempSightAngle < sightAngle){
+                closeObstacles->append(allObstacles->at(i));
+            }
+        }
+    }
+
+    return *closeObstacles;
+}
+
+void Creature::calculateVelocityBasedOnObstacles(Velocity2D &futureVelocity)
+{
+    if(closeObstacles->isEmpty()) {
+        return;
+    }
+
+    for(int i = 0; i < closeObstacles->length(); i++) {
+        Position2D obstaclePosition = closeObstacles->at(i)->getPosition();
+        Position2D positionDifference;
+        positionDifference = obstaclePosition - position; //przeciazony operator odejmowania
+
+        static float tempDistance = 0;
+
+//        tempDistance = qSqrt(qPow(positionDifference.x, 2) +
+//                             qPow(positionDifference.y, 2));
+        //odleglosc w trzeciej potedze do polepszenia dzialania
+        tempDistance = qPow((qPow(positionDifference.x, 2)
+                       + qPow(positionDifference.y, 2)), 1.5);
+        float distanceRatio = obstacleMinDistance / tempDistance;
+
+        futureVelocity -= positionDifference * obstacleMinDistanceFactor * (distanceRatio - 1); //przeciazone operatory
+    }
 }

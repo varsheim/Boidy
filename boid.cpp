@@ -251,6 +251,9 @@ Velocity2D Boid::calculateVelocity()
     //*** BOIDY UCIEKAJA OD PREDATOROW ***
     calculateVelocityBasedOnPredators(futureVelocity);
 
+    //*** BOIDY OMIJAJA PRZESZKODY ***
+    calculateVelocityBasedOnObstacles(futureVelocity);
+
     //*** LOSOWE ZAKLOCENIA ***
     addRandomNoise(futureVelocity);
 
