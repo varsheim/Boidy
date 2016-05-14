@@ -44,15 +44,6 @@ protected:
     float actualVelocity;
     float velocityAngle;
 
-    float maxVelocity;
-    float sightDistance;
-    float sightAngle;
-    float velocityLimitFactor;
-    float randomFactor;
-    float obstacleSightDistance;
-    float obstacleMinDistance;
-    float obstacleMinDistanceFactor;
-
     void checkMaxVelocity(float);
     void addRandomNoise(Velocity2D&, float);
 

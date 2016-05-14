@@ -21,20 +21,6 @@ Boid::Boid(Position2D position, Velocity2D velocity)
     neighboursAverageVelocity.xVelocity = 0;
     neighboursAverageVelocity.yVelocity = 0;
     neighboursAverageDistance = 0;
-    sightDistance = 0.75; //wymiary mapy to 4x4!!!!!!
-    sightAngle = 0.7 * 3.1416; //kat widzenia, 1*3.14 - 360 stopni (bo liczony jest oddzielnie w obie strony po 180 stopni
-    predatorSightDistance = 1.0;
-    predatorSightAngle = 1 * 3.1416; //360 stopni
-
-    neighboursVelocityFitFactor = 0.02;
-    neighboursGroupFitFactor = 0.005;
-    neighboursMinDistanceFactor = 0.005;
-    minDistance = 0.20;
-    predatorMinDistanceFactor = 0.04;
-    predatorMinDistance = 1.0;
-    maxVelocity = 0.20;
-    velocityLimitFactor = 0.80;
-    randomFactor = 0.08;
 }
 
 Boid::~Boid()

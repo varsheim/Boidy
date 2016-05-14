@@ -11,13 +11,6 @@ Predator::Predator(Position2D position, Velocity2D velocity)
     this->position = position;
     this->velocity = velocity;
     futureVelocity = velocity;
-    sightDistance = 2;
-    sightAngle = 0.7 * 3.1416;
-
-    velocityLimitFactor = 0.80;
-    maxVelocity = 0.25;
-    randomFactor = 0.08;
-    targetChaseFactor = 0.02;
 }
 
 Predator::~Predator()

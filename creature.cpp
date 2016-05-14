@@ -5,10 +5,6 @@
 Creature::Creature()
 {
     closeObstacles = new QList<Obstacle *>;
-
-    obstacleSightDistance = 0.20;
-    obstacleMinDistance = 0.05;
-    obstacleMinDistanceFactor = 0.003;
 }
 
 Creature::~Creature()
