@@ -1,5 +1,6 @@
 #include "predator.h"
 #include "boid.h"
+#include "algorithm.h"
 
 Predator::Predator(Position2D position, Velocity2D velocity)
 {
@@ -42,13 +43,13 @@ Boid* Predator::findTarget(QList<Boid *> *allBoids)
         tempDistance = qSqrt(qPow(positionDifference.x, 2) +
                              qPow(positionDifference.y, 2));
 
-        if(tempDistance < sightDistance){
+        if(tempDistance < Algorithm::getPredatorSelfSightDistance()){
             //jesli boid jest w promieniu mniejszym od sightDistance
             //sprawdzam dalej czy boid znajduje sie w kacie widzenia
             tempVelocityAngle = qAtan2(velocity.yVelocity, velocity.xVelocity);
             tempNeighbourAngle = qAtan2(positionDifference.y, positionDifference.x);
             tempSightAngle = qAbs(tempVelocityAngle - tempNeighbourAngle);
-            if(tempSightAngle < sightAngle){
+            if(tempSightAngle < Algorithm::getSightAngle()){
                 //jesli boid jest najblizej w sasiedztwie to namierz go
                 if(tempDistance <= minTempDistance){
                     targetBoid = allBoids->at(i);
@@ -57,6 +58,7 @@ Boid* Predator::findTarget(QList<Boid *> *allBoids)
             }
         }
     }
+
 
     targetBoidDistance = minTempDistance;
     return targetBoid;
@@ -67,7 +69,7 @@ void Predator::calculateVelocityBasedOnTarget(Velocity2D &futureVelocity)
     static Position2D positionDifference;
     positionDifference = targetBoid->getPosition() - position;
 
-    futureVelocity += positionDifference * targetChaseFactor;
+    futureVelocity += positionDifference * Algorithm::getTargetChaseFactor();
 }
 
 Velocity2D Predator::calculateVelocity()
@@ -79,10 +81,10 @@ Velocity2D Predator::calculateVelocity()
     calculateVelocityBasedOnObstacles(futureVelocity);
 
     // *** LOSOWE ZAKLOCENIA ***
-    addRandomNoise(futureVelocity);
+    addRandomNoise(futureVelocity, Algorithm::getPredatorMaxVelocity());
 
     // *** OGRANICZ PREDKOSC ***
-    checkMaxVelocity();
+    checkMaxVelocity(Algorithm::getPredatorMaxVelocity());
 
     return velocity;
 }

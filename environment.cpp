@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "environment.h"
+#include "algorithm.h"
 #include "creature.h"
 #include "boid.h"
 #include "predator.h"
@@ -188,7 +189,7 @@ void Environment::updateEnvironment()
         boidSwarm->at(i)->updatePosition(height(), width());
     }
     //wyrzucanie wybranego info na ekran
-    emit sendNeighboursAmount(boidSwarm->at(0)->getCloseObstacles().length(),
+    emit sendNeighboursAmount(Algorithm::getNeighboursVelocityFitFactor(),
                               boidSwarm->at(1)->getCloseObstacles().length(),
                               boidSwarm->at(2)->getCloseObstacles().length());
 

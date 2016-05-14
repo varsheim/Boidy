@@ -53,8 +53,8 @@ protected:
     float obstacleMinDistance;
     float obstacleMinDistanceFactor;
 
-    void checkMaxVelocity();
-    void addRandomNoise(Velocity2D&);
+    void checkMaxVelocity(float);
+    void addRandomNoise(Velocity2D&, float);
 
     QList<Obstacle *> *closeObstacles;
 
