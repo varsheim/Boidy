@@ -26,7 +26,6 @@ Boid::Boid(Position2D position, Velocity2D velocity)
     predatorSightAngle = 1 * 3.1416; //360 stopni
 
     neighboursVelocityFitFactor = 0.02;
-    neighboursAverageDistance = 0;
     neighboursGroupFitFactor = 0.005;
     neighboursMinDistanceFactor = 0.005;
     minDistance = 0.20;

@@ -13,9 +13,9 @@ Predator::Predator(Position2D position, Velocity2D velocity)
     sightDistance = 2;
     sightAngle = 0.7 * 3.1416;
 
-    velocityLimitFactor = 0.70;
+    velocityLimitFactor = 0.80;
     maxVelocity = 0.25;
-    randomFactor = 0.04;
+    randomFactor = 0.08;
     targetChaseFactor = 0.02;
 }
 

@@ -21,9 +21,6 @@ public:
 
     Position2D getPosition();
     Velocity2D getVelocity();
-    float getMaxVelocity();
-    float getSightDistance();
-    float getSightAngle();
     float getVelocityAngle();
     QList<Obstacle *> getCloseObstacles();
 
@@ -33,9 +30,6 @@ public:
 
     void setPosition(Position2D);
     void setVelocity(Velocity2D);
-    void setMaxVelocity(float);
-    void setSightDistance(float);
-    void setSightAngle(float);
 
     void updatePosition(int, int); //do x,y dodawane sa wartosci vx i vy
 
@@ -47,12 +41,12 @@ protected:
     Position2D position;
     Velocity2D futureVelocity;
     Velocity2D velocity;
+    float actualVelocity;
+    float velocityAngle;
 
     float maxVelocity;
     float sightDistance;
     float sightAngle;
-    float velocityAngle;
-    float actualVelocity;
     float velocityLimitFactor;
     float randomFactor;
     float obstacleSightDistance;
