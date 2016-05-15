@@ -15,6 +15,7 @@ public:
     explicit Environment(QWidget *parent = 0);
     ~Environment();
 
+
 protected:
     void initializeGL();
     void paintGL();

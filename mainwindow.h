@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QString>
 
+class Environment;
+
 namespace Ui {
 class MainWindow;
 }
@@ -15,6 +17,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    Environment *getEnvironment();
 
 public slots:
     void setNeighboursIndicator(float, float, float);

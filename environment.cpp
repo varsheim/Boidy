@@ -12,35 +12,32 @@
 Environment::Environment(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
-    startXPos = 0.002;
-    startYPos = 0.002;
-    startXVelo = 0.05;
-    startYVelo = 0.05;
-    boidQuantity = 50;
-    predatorQuantity = 1;
-    obstacleQuantity = 10;
+    //*** TWORZENIE PIERWSZYCH BOIDOW ***
+    createBoidSwarmOnStart(Algorithm::onStartBoidQuantity,
+                           Algorithm::startXPos,
+                           Algorithm::startYPos,
+                           Algorithm::startXVelo,
+                           Algorithm::startYVelo);
 
-    drawingDelay = 10; //co ile ms odswieza mape
-    calculatingDelay = 10; // co ile ms przelicza obiekty
+    //*** TWORZENIE PIERWSZYCH PREDATOROW ***
+    createPredatorSwarmOnStart(Algorithm::onStartPredatorQuantity,
+                               Algorithm::startXPos,
+                               Algorithm::startYPos,
+                               Algorithm::startXVelo,
+                               Algorithm::startYVelo);
 
-    //*** TWORZENIE BOIDOW ***
-    createBoidSwarmOnStart(boidQuantity, startXPos, startYPos, startXVelo, startYVelo);
-
-    //*** TWORZENIE PREDATOROW ***
-    createPredatorSwarmOnStart(predatorQuantity, startXPos, startYPos, startXVelo, startYVelo);
-
-    //*** TWORZENIE PRZESZKOD ***
-    createObstaclesOnStart(obstacleQuantity);
+    //*** TWORZENIE PIERWSZYCH PRZESZKOD ***
+    createObstaclesOnStart(Algorithm::onStartObstacleQuantity);
 
     //timer rysujacy wszystko
+    drawingDelay = 10; //co ile ms odswieza mape
     QTimer *drawingTimer = new QTimer(this);
     connect(drawingTimer, SIGNAL(timeout()), this, SLOT(updateEnvironment()));
     drawingTimer->start(drawingDelay);
 
-    //timer liczacy wszystko
-    QTimer *calculatingTimer = new QTimer(this);
-    connect(calculatingTimer, SIGNAL(timeout()), this, SLOT(updateCreatures()));
-    calculatingTimer->start(calculatingDelay);
+    //inicjalizacja timera liczacego z klasy Algorithm
+    connect(Algorithm::getCalculatingTimer(), SIGNAL(timeout()), this, SLOT(updateCreatures()));
+    Algorithm::initialize();
 }
 
 Environment::~Environment()

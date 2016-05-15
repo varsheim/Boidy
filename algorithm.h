@@ -1,11 +1,25 @@
 #ifndef ALGORITHM_H
 #define ALGORITHM_H
 
+#include <QtWidgets>
 
 class Algorithm
 {
 public:
     Algorithm();
+
+    static const int onStartBoidQuantity;
+    static const int onStartPredatorQuantity;
+    static const int onStartObstacleQuantity;
+    static const float startXPos;
+    static const float startYPos;
+    static const float startXVelo;
+    static const float startYVelo;
+
+    static void initialize();
+    static int getOnStartBoidQuantity();
+    static int getOnStartPredatorQuantity();
+    static int getOnStartObstacleQuantity();
 
     //gettery i settery parametrow boida
     static float getNeighboursVelocityFitFactor();
@@ -60,6 +74,11 @@ public:
     static void setObstacleMinDistance(float value);
     static void setObstacleMinDistanceFactor(float value);
 
+    //timery
+    static int getCalculatingDelay();
+    static void setCalculatingDelay(int value);
+    static QTimer *getCalculatingTimer();
+
 private:
     //parametry boida
     static float neighboursVelocityFitFactor;
@@ -88,6 +107,9 @@ private:
     static float obstacleMinDistance;
     static float obstacleMinDistanceFactor;
 
+    //timery
+    static int calculatingDelay;
+    static QTimer *calculatingTimer;
 };
 
 #endif // ALGORITHM_H

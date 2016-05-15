@@ -1,4 +1,13 @@
 #include "algorithm.h"
+#include "mainwindow.h"
+
+const int Algorithm::onStartBoidQuantity = 50;
+const int Algorithm::onStartPredatorQuantity = 2;
+const int Algorithm::onStartObstacleQuantity = 5;
+const float Algorithm::startXPos = 0.002;
+const float Algorithm::startYPos = 0.002;
+const float Algorithm::startXVelo = 0.05;
+const float Algorithm::startYVelo = 0.05;
 
 //parametry boida
 float Algorithm::neighboursVelocityFitFactor = 0.02;
@@ -22,12 +31,22 @@ float Algorithm::predatorSelfSightDistance = 2;
 float Algorithm::sightAngle = 0.7 * 3.1416;
 float Algorithm::velocityLimitFactor = 0.80;
 float Algorithm::randomFactor = 0.08;
-float Algorithm::obstacleSightDistance = 0.20;
-float Algorithm::obstacleMinDistance = 0.05;
+float Algorithm::obstacleSightDistance = 0.25;
+float Algorithm::obstacleMinDistance = 0.10;
 float Algorithm::obstacleMinDistanceFactor = 0.003;
+
+//timery
+int Algorithm::calculatingDelay = 10;
+QTimer *Algorithm::calculatingTimer = new QTimer();
 
 Algorithm::Algorithm()
 {
+
+}
+
+void Algorithm::initialize()
+{
+    Algorithm::calculatingTimer->start(Algorithm::calculatingDelay);
 
 }
 
@@ -189,6 +208,36 @@ float Algorithm::getObstacleMinDistanceFactor()
 void Algorithm::setObstacleMinDistanceFactor(float value)
 {
     obstacleMinDistanceFactor = value;
+}
+
+int Algorithm::getCalculatingDelay()
+{
+    return calculatingDelay;
+}
+
+void Algorithm::setCalculatingDelay(int value)
+{
+    calculatingDelay = value;
+}
+
+QTimer *Algorithm::getCalculatingTimer()
+{
+    return calculatingTimer;
+}
+
+int Algorithm::getOnStartBoidQuantity()
+{
+    return onStartBoidQuantity;
+}
+
+int Algorithm::getOnStartPredatorQuantity()
+{
+    return onStartPredatorQuantity;
+}
+
+int Algorithm::getOnStartObstacleQuantity()
+{
+    return onStartObstacleQuantity;
 }
 
 float Algorithm::getPredatorMaxVelocity()

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "environment.h"
 #include "boid.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -20,4 +21,9 @@ MainWindow::~MainWindow()
 void MainWindow::setNeighboursIndicator(float a, float b, float c) //abc to trzy liczby do wyswietlenia
 {
     ui->neighboursIndicator->setText(QString::number(a) + " " + QString::number(b) + " " + QString::number(c));
+}
+
+Environment* MainWindow::getEnvironment()
+{
+    return ui->environment;
 }
