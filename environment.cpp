@@ -69,8 +69,8 @@ void Environment::createBoidSwarmOnStart(int quantity,
     tempVelocity.yVelocity = startYVelo;
 
     for (int i = 0; i < quantity; i++){
-        tempPosition.x = startXPos*i;
-        tempPosition.y = startYPos*i;
+        tempPosition.x = startXPos * (i + 1);
+        tempPosition.y = startYPos * (i + 1);
         boidSwarm->append(new Boid(tempPosition, tempVelocity));
     }
 }
@@ -105,6 +105,70 @@ void Environment::createObstaclesOnStart(int quantity)
         tempPosition.y = (qrand() % 200 - 100) / 50.0;
         obstacles->append(new Obstacle(tempPosition));
     }
+}
+
+//eventy myszy
+void Environment::boidMousePressEvent(QMouseEvent *event)
+{
+    Position2D mousePosition;
+    mousePosition.x = (event->x() - 300)/150.0;
+    mousePosition.y = (- event->y() + 300)/150.0;
+
+    Velocity2D tempVelocity;
+    tempVelocity.xVelocity = Algorithm::startXVelo;
+    tempVelocity.yVelocity = Algorithm::startXVelo;
+
+    if(event->button() == Qt::LeftButton){
+        boidSwarm->append(new Boid(mousePosition, tempVelocity));
+    }
+    else if(event->button() == Qt::RightButton){
+        if(boidSwarm->length() > 2){
+            delete boidSwarm->takeLast();
+        }
+    }
+}
+
+void Environment::predatorMousePressEvent(QMouseEvent *event)
+{
+    Position2D mousePosition;
+    mousePosition.x = (event->x() - 300)/150.0;
+    mousePosition.y = (- event->y() + 300)/150.0;
+
+    Velocity2D tempVelocity;
+    tempVelocity.xVelocity = Algorithm::startXVelo;
+    tempVelocity.yVelocity = Algorithm::startXVelo;
+
+    if(event->button() == Qt::LeftButton){
+        predatorSwarm->append(new Predator(mousePosition, tempVelocity));
+    }
+    else if(event->button() == Qt::RightButton){
+        if(predatorSwarm->length() > 0){
+            delete predatorSwarm->takeLast();
+        }
+    }
+}
+
+void Environment::obstacleMousePressEvent(QMouseEvent *event)
+{
+    Position2D mousePosition;
+    mousePosition.x = (event->x() - 300)/150.0;
+    mousePosition.y = (- event->y() + 300)/150.0;
+
+    if(event->button() == Qt::LeftButton){
+        obstacles->append(new Obstacle(mousePosition));
+    }
+    else if(event->button() == Qt::RightButton){
+        if(obstacles->length() > 0){
+            delete obstacles->takeLast();
+        }
+    }
+}
+
+void Environment::mousePressEvent(QMouseEvent *event)
+{
+    boidMousePressEvent(event);
+
+    emit sendNeighboursAmount(obstacles->length(), 0, 0);
 }
 
 QSize Environment::minimumSizeHint() const
@@ -186,9 +250,9 @@ void Environment::updateEnvironment()
         boidSwarm->at(i)->updatePosition(height(), width());
     }
     //wyrzucanie wybranego info na ekran
-    emit sendNeighboursAmount(Algorithm::getNeighboursVelocityFitFactor(),
-                              boidSwarm->at(1)->getCloseObstacles().length(),
-                              boidSwarm->at(2)->getCloseObstacles().length());
+//    emit sendNeighboursAmount(Algorithm::getNeighboursVelocityFitFactor(),
+//                              boidSwarm->at(1)->getCloseObstacles().length(),
+//                              boidSwarm->at(2)->getCloseObstacles().length());
 
     for(int i = 0; i < predatorSwarm->length(); i++){
         predatorSwarm->at(i)->updateVelocity(); //ustawienie velocity = futureVelocity

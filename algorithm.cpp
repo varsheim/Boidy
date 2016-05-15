@@ -1,7 +1,7 @@
 #include "algorithm.h"
 #include "mainwindow.h"
 
-const int Algorithm::onStartBoidQuantity = 50;
+const int Algorithm::onStartBoidQuantity = 20;
 const int Algorithm::onStartPredatorQuantity = 2;
 const int Algorithm::onStartObstacleQuantity = 5;
 const float Algorithm::startXPos = 0.002;
@@ -32,7 +32,7 @@ float Algorithm::sightAngle = 0.7 * 3.1416;
 float Algorithm::velocityLimitFactor = 0.80;
 float Algorithm::randomFactor = 0.08;
 float Algorithm::obstacleSightDistance = 0.25;
-float Algorithm::obstacleMinDistance = 0.10;
+float Algorithm::obstacleMinDistance = 0.15;
 float Algorithm::obstacleMinDistanceFactor = 0.003;
 
 //timery

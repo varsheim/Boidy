@@ -49,6 +49,11 @@ private:
     QList<Predator *> *predatorSwarm;
     QList<Obstacle *> *obstacles;
 
+    void mousePressEvent(QMouseEvent *event);
+    void boidMousePressEvent(QMouseEvent *event);
+    void predatorMousePressEvent(QMouseEvent *event);
+    void obstacleMousePressEvent(QMouseEvent *event);
+
 signals:
     void sendNeighboursAmount(float, float, float);
 
