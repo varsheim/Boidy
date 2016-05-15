@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "environment.h"
+#include "algorithm.h"
 #include "creature.h"
 #include "boid.h"
 #include "predator.h"
@@ -11,35 +12,32 @@
 Environment::Environment(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
-    startXPos = 0.002;
-    startYPos = 0.002;
-    startXVelo = 0.05;
-    startYVelo = 0.05;
-    boidQuantity = 50;
-    predatorQuantity = 1;
-    obstacleQuantity = 10;
+    //*** TWORZENIE PIERWSZYCH BOIDOW ***
+    createBoidSwarmOnStart(Algorithm::onStartBoidQuantity,
+                           Algorithm::startXPos,
+                           Algorithm::startYPos,
+                           Algorithm::startXVelo,
+                           Algorithm::startYVelo);
 
-    drawingDelay = 10; //co ile ms odswieza mape
-    calculatingDelay = 10; // co ile ms przelicza obiekty
+    //*** TWORZENIE PIERWSZYCH PREDATOROW ***
+    createPredatorSwarmOnStart(Algorithm::onStartPredatorQuantity,
+                               Algorithm::startXPos,
+                               Algorithm::startYPos,
+                               Algorithm::startXVelo,
+                               Algorithm::startYVelo);
 
-    //*** TWORZENIE BOIDOW ***
-    createBoidSwarmOnStart(boidQuantity, startXPos, startYPos, startXVelo, startYVelo);
-
-    //*** TWORZENIE PREDATOROW ***
-    createPredatorSwarmOnStart(predatorQuantity, startXPos, startYPos, startXVelo, startYVelo);
-
-    //*** TWORZENIE PRZESZKOD ***
-    createObstaclesOnStart(obstacleQuantity);
+    //*** TWORZENIE PIERWSZYCH PRZESZKOD ***
+    createObstaclesOnStart(Algorithm::onStartObstacleQuantity);
 
     //timer rysujacy wszystko
+    drawingDelay = 10; //co ile ms odswieza mape
     QTimer *drawingTimer = new QTimer(this);
     connect(drawingTimer, SIGNAL(timeout()), this, SLOT(updateEnvironment()));
     drawingTimer->start(drawingDelay);
 
-    //timer liczacy wszystko
-    QTimer *calculatingTimer = new QTimer(this);
-    connect(calculatingTimer, SIGNAL(timeout()), this, SLOT(updateCreatures()));
-    calculatingTimer->start(calculatingDelay);
+    //inicjalizacja timera liczacego z klasy Algorithm
+    connect(Algorithm::getCalculatingTimer(), SIGNAL(timeout()), this, SLOT(updateCreatures()));
+    Algorithm::initialize();
 }
 
 Environment::~Environment()
@@ -71,8 +69,8 @@ void Environment::createBoidSwarmOnStart(int quantity,
     tempVelocity.yVelocity = startYVelo;
 
     for (int i = 0; i < quantity; i++){
-        tempPosition.x = startXPos*i;
-        tempPosition.y = startYPos*i;
+        tempPosition.x = startXPos * (i + 1);
+        tempPosition.y = startYPos * (i + 1);
         boidSwarm->append(new Boid(tempPosition, tempVelocity));
     }
 }
@@ -107,6 +105,70 @@ void Environment::createObstaclesOnStart(int quantity)
         tempPosition.y = (qrand() % 200 - 100) / 50.0;
         obstacles->append(new Obstacle(tempPosition));
     }
+}
+
+//eventy myszy
+void Environment::boidMousePressEvent(QMouseEvent *event)
+{
+    Position2D mousePosition;
+    mousePosition.x = (event->x() - 300)/150.0;
+    mousePosition.y = (- event->y() + 300)/150.0;
+
+    Velocity2D tempVelocity;
+    tempVelocity.xVelocity = Algorithm::startXVelo;
+    tempVelocity.yVelocity = Algorithm::startXVelo;
+
+    if(event->button() == Qt::LeftButton){
+        boidSwarm->append(new Boid(mousePosition, tempVelocity));
+    }
+    else if(event->button() == Qt::RightButton){
+        if(boidSwarm->length() > 2){
+            delete boidSwarm->takeLast();
+        }
+    }
+}
+
+void Environment::predatorMousePressEvent(QMouseEvent *event)
+{
+    Position2D mousePosition;
+    mousePosition.x = (event->x() - 300)/150.0;
+    mousePosition.y = (- event->y() + 300)/150.0;
+
+    Velocity2D tempVelocity;
+    tempVelocity.xVelocity = Algorithm::startXVelo;
+    tempVelocity.yVelocity = Algorithm::startXVelo;
+
+    if(event->button() == Qt::LeftButton){
+        predatorSwarm->append(new Predator(mousePosition, tempVelocity));
+    }
+    else if(event->button() == Qt::RightButton){
+        if(predatorSwarm->length() > 0){
+            delete predatorSwarm->takeLast();
+        }
+    }
+}
+
+void Environment::obstacleMousePressEvent(QMouseEvent *event)
+{
+    Position2D mousePosition;
+    mousePosition.x = (event->x() - 300)/150.0;
+    mousePosition.y = (- event->y() + 300)/150.0;
+
+    if(event->button() == Qt::LeftButton){
+        obstacles->append(new Obstacle(mousePosition));
+    }
+    else if(event->button() == Qt::RightButton){
+        if(obstacles->length() > 0){
+            delete obstacles->takeLast();
+        }
+    }
+}
+
+void Environment::mousePressEvent(QMouseEvent *event)
+{
+    boidMousePressEvent(event);
+
+    emit sendNeighboursAmount(obstacles->length(), 0, 0);
 }
 
 QSize Environment::minimumSizeHint() const
@@ -188,9 +250,9 @@ void Environment::updateEnvironment()
         boidSwarm->at(i)->updatePosition(height(), width());
     }
     //wyrzucanie wybranego info na ekran
-    emit sendNeighboursAmount(boidSwarm->at(0)->getCloseObstacles().length(),
-                              boidSwarm->at(1)->getCloseObstacles().length(),
-                              boidSwarm->at(2)->getCloseObstacles().length());
+//    emit sendNeighboursAmount(Algorithm::getNeighboursVelocityFitFactor(),
+//                              boidSwarm->at(1)->getCloseObstacles().length(),
+//                              boidSwarm->at(2)->getCloseObstacles().length());
 
     for(int i = 0; i < predatorSwarm->length(); i++){
         predatorSwarm->at(i)->updateVelocity(); //ustawienie velocity = futureVelocity

@@ -29,15 +29,6 @@ protected:
 
 
 private:
-    float neighboursVelocityFitFactor;
-    float neighboursGroupFitFactor;
-    float neighboursMinDistanceFactor;
-    float minDistance;
-    float predatorMinDistance;
-    float predatorMinDistanceFactor;
-    float predatorSightDistance;
-    float predatorSightAngle;
-
     QList<Boid *> *neighbours;
     QList<Predator *> *closePredators;
 

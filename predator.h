@@ -18,9 +18,7 @@ public:
     Velocity2D calculateVelocity();
 
 private:
-    bool isOffensive;
     float targetBoidDistance;
-    float targetChaseFactor;
 
     Boid *targetBoid;
 

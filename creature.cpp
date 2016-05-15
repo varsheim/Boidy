@@ -1,13 +1,10 @@
 #include "creature.h"
 #include "environment.h"
+#include "algorithm.h"
 
 Creature::Creature()
 {
     closeObstacles = new QList<Obstacle *>;
-
-    obstacleSightDistance = 0.20;
-    obstacleMinDistance = 0.05;
-    obstacleMinDistanceFactor = 0.003;
 }
 
 Creature::~Creature()
@@ -81,20 +78,20 @@ float Creature::getVelocityAngle()
     return qAtan2(velocity.yVelocity, velocity.xVelocity);
 }
 
-void Creature::checkMaxVelocity()
+void Creature::checkMaxVelocity(float compareMaxVelocity)
 {
     actualVelocity = qSqrt(qPow(futureVelocity.xVelocity, 2) +
                            qPow(futureVelocity.yVelocity, 2));
 
-    if(actualVelocity >= maxVelocity){
-        futureVelocity = futureVelocity * velocityLimitFactor;
+    if(actualVelocity >= compareMaxVelocity){
+        futureVelocity = futureVelocity * Algorithm::getVelocityLimitFactor();
     }
 }
 
-void Creature::addRandomNoise(Velocity2D &futureVelocity)
+void Creature::addRandomNoise(Velocity2D &futureVelocity, float compareMaxVelocity)
 {
-    futureVelocity.xVelocity += randomFactor * (qrand() % 200 - 100) * maxVelocity / 200;
-    futureVelocity.yVelocity += randomFactor * (qrand() % 200 - 100) * maxVelocity / 200;
+    futureVelocity.xVelocity += Algorithm::getRandomFactor() * (qrand() % 200 - 100) * compareMaxVelocity / 200;
+    futureVelocity.yVelocity += Algorithm::getRandomFactor() * (qrand() % 200 - 100) * compareMaxVelocity / 200;
 }
 
 void Creature::updateVelocity()
@@ -113,13 +110,13 @@ QList<Obstacle *> Creature::findObstacles(QList<Obstacle *> *allObstacles)
         positionDifference = allObstacles->at(i)->getPosition() - position;
         tempDistance = qSqrt(qPow(positionDifference.x, 2) +
                              qPow(positionDifference.y, 2));
-        if(tempDistance < obstacleSightDistance){
+        if(tempDistance < Algorithm::getObstacleSightDistance()){
             //jesli Predator jest w promieniu rownym sightDistance
             //sprawdzam dalej czy Predator znajduje sie w kacie widzenia
             tempVelocityAngle = qAtan2(velocity.yVelocity, velocity.xVelocity);
             tempNeighbourAngle = qAtan2(positionDifference.y, positionDifference.x);
             tempSightAngle = qAbs(tempVelocityAngle - tempNeighbourAngle);
-            if(tempSightAngle < sightAngle){
+            if(tempSightAngle < Algorithm::getSightAngle()){
                 closeObstacles->append(allObstacles->at(i));
             }
         }
@@ -146,8 +143,8 @@ void Creature::calculateVelocityBasedOnObstacles(Velocity2D &futureVelocity)
         //odleglosc w trzeciej potedze do polepszenia dzialania
         tempDistance = qPow((qPow(positionDifference.x, 2)
                        + qPow(positionDifference.y, 2)), 1.5);
-        float distanceRatio = obstacleMinDistance / tempDistance;
+        float distanceRatio = Algorithm::getObstacleMinDistance() / tempDistance;
 
-        futureVelocity -= positionDifference * obstacleMinDistanceFactor * (distanceRatio - 1); //przeciazone operatory
+        futureVelocity -= positionDifference * Algorithm::getObstacleMinDistanceFactor() * (distanceRatio - 1); //przeciazone operatory
     }
 }
