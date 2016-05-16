@@ -49,10 +49,18 @@ private:
     QList<Predator *> *predatorSwarm;
     QList<Obstacle *> *obstacles;
 
+    //obsluga myszy
     void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
     void boidMousePressEvent(QMouseEvent *event);
     void predatorMousePressEvent(QMouseEvent *event);
     void obstacleMousePressEvent(QMouseEvent *event);
+
+    Position2D mouseOldPosition;
+    void mouseDrawObstacles();
+
+    bool mouseLeftDown;
+    bool mouseRightDown;
 
 signals:
     void sendNeighboursAmount(float, float, float);

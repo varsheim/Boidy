@@ -166,9 +166,26 @@ void Environment::obstacleMousePressEvent(QMouseEvent *event)
 
 void Environment::mousePressEvent(QMouseEvent *event)
 {
-    boidMousePressEvent(event);
+    if(event->button() == Qt::LeftButton){
+        mouseLeftDown = true;
+    }
+    else if(event->button() == Qt::RightButton){
+        mouseRightDown = true;
+    }
+    mouseOldPosition.x = (event->x() - 300)/150.0;
+    mouseOldPosition.y = (- event->y() + 300)/150.0;
 
     emit sendNeighboursAmount(obstacles->length(), 0, 0);
+}
+
+void Environment::mouseReleaseEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton){
+        mouseLeftDown = false;
+    }
+    else if(event->button() == Qt::RightButton){
+        mouseRightDown = false;
+    }
 }
 
 QSize Environment::minimumSizeHint() const
@@ -249,17 +266,40 @@ void Environment::updateEnvironment()
         boidSwarm->at(i)->updateVelocity(); //ustawienie velocity = futureVelocity
         boidSwarm->at(i)->updatePosition(height(), width());
     }
-    //wyrzucanie wybranego info na ekran
-//    emit sendNeighboursAmount(Algorithm::getNeighboursVelocityFitFactor(),
-//                              boidSwarm->at(1)->getCloseObstacles().length(),
-//                              boidSwarm->at(2)->getCloseObstacles().length());
 
     for(int i = 0; i < predatorSwarm->length(); i++){
         predatorSwarm->at(i)->updateVelocity(); //ustawienie velocity = futureVelocity
         predatorSwarm->at(i)->updatePosition(height(), width());
     }
 
+    mouseDrawObstacles();
     updateGL(); //rysuj wszystko
+}
+
+void Environment::mouseDrawObstacles()
+{
+    Position2D tempMousePosition;
+    tempMousePosition.x = (this->mapFromGlobal(QCursor::pos()).x() - 300) / 150.0;
+    tempMousePosition.y = (- this->mapFromGlobal(QCursor::pos()).y() + 300) / 150.0;
+
+    float tempMouseDistance;
+    tempMouseDistance = qSqrt(qPow((tempMousePosition.x - mouseOldPosition.x), 2) +
+                              qPow((tempMousePosition.y - mouseOldPosition.y), 2));
+
+    if(mouseLeftDown && tempMouseDistance > 0.05){
+        mouseOldPosition = tempMousePosition;
+        obstacles->append(new Obstacle(tempMousePosition));
+    }
+    else if(mouseRightDown){
+        float tempObstacleDistance;
+        for(int i = 0; i < obstacles->length(); i++){
+            tempObstacleDistance = qSqrt(qPow((tempMousePosition.x - obstacles->at(i)->getPosition().x), 2) +
+                                         qPow((tempMousePosition.y - obstacles->at(i)->getPosition().y), 2));
+            if(tempObstacleDistance < 0.1){
+                delete obstacles->takeAt(i);
+            }
+        }
+    }
 }
 
 void Environment::drawObstacles(QList<Obstacle *> *obstacles)
