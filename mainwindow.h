@@ -22,6 +22,11 @@ public:
 public slots:
     void setNeighboursIndicator(float, float, float);
 
+private slots:
+    void on_radioBoidButton_toggled(bool checked);
+    void on_radioButtonPredator_toggled(bool checked);
+    void on_radioButtonObstacle_toggled(bool checked);
+
 private:
     Ui::MainWindow *ui;
 };

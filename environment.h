@@ -15,6 +15,9 @@ public:
     explicit Environment(QWidget *parent = 0);
     ~Environment();
 
+    void switchBoidDrawing(bool);
+    void switchPredatorDrawing(bool);
+    void switchObstacleDrawing(bool);
 
 protected:
     void initializeGL();
@@ -54,13 +57,16 @@ private:
     void mouseReleaseEvent(QMouseEvent *event);
     void boidMousePressEvent(QMouseEvent *event);
     void predatorMousePressEvent(QMouseEvent *event);
-    void obstacleMousePressEvent(QMouseEvent *event);
 
     Position2D mouseOldPosition;
     void mouseDrawObstacles();
 
     bool mouseLeftDown;
     bool mouseRightDown;
+
+    bool boidDrawingOn;
+    bool predatorDrawingOn;
+    bool obstacleDrawingOn;
 
 signals:
     void sendNeighboursAmount(float, float, float);

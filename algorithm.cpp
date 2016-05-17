@@ -1,5 +1,7 @@
 #include "algorithm.h"
 #include "mainwindow.h"
+#include <cstdio>
+#include <ctime>
 
 const int Algorithm::onStartBoidQuantity = 20;
 const int Algorithm::onStartPredatorQuantity = 2;
@@ -47,7 +49,7 @@ Algorithm::Algorithm()
 void Algorithm::initialize()
 {
     Algorithm::calculatingTimer->start(Algorithm::calculatingDelay);
-
+    qsrand(time(NULL));
 }
 
 float Algorithm::getNeighboursVelocityFitFactor()
