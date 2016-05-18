@@ -33,7 +33,7 @@ float Algorithm::predatorSelfSightDistance = 2;
 float Algorithm::sightAngle = 0.7 * 3.1416;
 float Algorithm::velocityLimitFactor = 0.80;
 float Algorithm::randomFactor = 0.08;
-float Algorithm::obstacleSightDistance = 0.25;
+float Algorithm::obstacleSightDistance = 0.50;
 float Algorithm::obstacleMinDistance = 0.15;
 float Algorithm::obstacleMinDistanceFactor = 0.003;
 
