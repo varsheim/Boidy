@@ -84,7 +84,19 @@ void Creature::checkMaxVelocity(float compareMaxVelocity)
                            qPow(futureVelocity.yVelocity, 2));
 
     if(actualVelocity >= compareMaxVelocity){
-        futureVelocity = futureVelocity * Algorithm::getVelocityLimitFactor();
+        int signX;
+
+        if(futureVelocity.xVelocity >= 0){
+            signX = 1;
+        }
+        else{
+            signX = -1;
+        }
+
+        float velocityCoefficient = futureVelocity.yVelocity / futureVelocity.xVelocity;
+        futureVelocity.xVelocity = signX * Algorithm::getVelocityLimitFactor()
+                                 * compareMaxVelocity / qSqrt(qPow(velocityCoefficient, 2) + 1);
+        futureVelocity.yVelocity = futureVelocity.xVelocity * velocityCoefficient;
     }
 }
 

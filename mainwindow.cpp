@@ -9,9 +9,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setNeighboursIndicator(10, 20, 20);
-
-    connect(ui->environment, SIGNAL(sendNeighboursAmount(float,float,float)), this, SLOT(setNeighboursIndicator(float,float,float)));
 
     MainWindow::on_radioBoidButton_toggled(true);
 
@@ -36,11 +33,6 @@ void MainWindow::setLabels()
     ui->randomFactorLabel->setText(QString::number(Algorithm::getRandomFactor()));
     ui->obstacleMinDistanceLabel->setText(QString::number(Algorithm::getObstacleMinDistance()));
     ui->predatorMaxVelocityLabel->setText(QString::number(Algorithm::getPredatorMaxVelocity()));
-}
-
-void MainWindow::setNeighboursIndicator(float a, float b, float c) //abc to trzy liczby do wyswietlenia
-{
-    ui->neighboursIndicator->setText(QString::number(a) + " " + QString::number(b) + " " + QString::number(c));
 }
 
 Environment* MainWindow::getEnvironment()
@@ -144,4 +136,25 @@ void MainWindow::on_predatorMaxVelocitySlider_valueChanged(int value)
     float normalValue = value / 100.0;
     Algorithm::setPredatorMaxVelocity(normalValue);
     ui->predatorMaxVelocityLabel->setText(QString::number(Algorithm::getPredatorMaxVelocity()));
+}
+
+void MainWindow::setDefaultSliders()
+{
+    ui->minDistanceSlider->setValue(int(Algorithm::defaultMinDistance * 100));
+    ui->boidMaxVelocitySlider->setValue(int(Algorithm::defaultBoidMaxVelocity * 100));
+    ui->boidSightDistanceSlider->setValue(int(Algorithm::defaultBoidSightDistance * 100));
+    ui->boidSightAngleSlider->setValue(int(Algorithm::defaultSightAngle * 360 / 3.14));
+    ui->neighboursVelocityFitFactorSlider->setValue(int(Algorithm::defaultNeighboursVelocityFitFactor * 1000));
+    ui->neighboursGroupFitFactorSlider->setValue(int(Algorithm::defaultNeighboursGroupFitFactor * 1000));
+    ui->neighboursMinDistanceFactorSlider->setValue(int(Algorithm::defaultNeighboursMinDistanceFactor * 1000));
+    ui->predatorMinDistanceFactorSlider->setValue(int(Algorithm::defaultPredatorMinDistanceFactor * 1000));
+    ui->randomFactorSlider->setValue(int(Algorithm::defaultRandomFactor * 100));
+    ui->obstacleMinDistanceSlider->setValue(int(Algorithm::defaultObstacleMinDistance * 100));
+    ui->predatorMaxVelocitySlider->setValue(int(Algorithm::defaultPredatorMaxVelocity * 100));
+}
+
+void MainWindow::on_resetButton_clicked()
+{
+    Algorithm::setDefaultParameters();
+    setDefaultSliders();
 }

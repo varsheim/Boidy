@@ -79,6 +79,20 @@ public:
     static void setCalculatingDelay(int value);
     static QTimer *getCalculatingTimer();
 
+    //stale przechowujace poczatkowe parametry z ui
+    static void setDefaultParameters();
+    static const float defaultMinDistance;
+    static const float defaultBoidMaxVelocity;
+    static const float defaultBoidSightDistance;
+    static const float defaultSightAngle;
+    static const float defaultNeighboursVelocityFitFactor;
+    static const float defaultNeighboursGroupFitFactor;
+    static const float defaultNeighboursMinDistanceFactor;
+    static const float defaultPredatorMinDistanceFactor;
+    static const float defaultRandomFactor;
+    static const float defaultObstacleMinDistance;
+    static const float defaultPredatorMaxVelocity;
+
 private:
     //parametry boida
     static float neighboursVelocityFitFactor;

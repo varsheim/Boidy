@@ -69,7 +69,6 @@ private:
     bool obstacleDrawingOn;
 
 signals:
-    void sendNeighboursAmount(float, float, float);
 
 private slots:
     void updateEnvironment();

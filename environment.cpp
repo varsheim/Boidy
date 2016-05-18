@@ -160,8 +160,6 @@ void Environment::mousePressEvent(QMouseEvent *event)
     mouseOldPosition.x = (event->x() - 300)/150.0;
     mouseOldPosition.y = (- event->y() + 300)/150.0;
 
-    emit sendNeighboursAmount(obstacles->length(), 0, 0);
-
     if(boidDrawingOn){
         boidMousePressEvent(event);
     }
