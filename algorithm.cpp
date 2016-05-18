@@ -1,5 +1,7 @@
 #include "algorithm.h"
 #include "mainwindow.h"
+#include <cstdio>
+#include <ctime>
 
 const int Algorithm::onStartBoidQuantity = 20;
 const int Algorithm::onStartPredatorQuantity = 2;
@@ -31,13 +33,26 @@ float Algorithm::predatorSelfSightDistance = 2;
 float Algorithm::sightAngle = 0.7 * 3.1416;
 float Algorithm::velocityLimitFactor = 0.80;
 float Algorithm::randomFactor = 0.08;
-float Algorithm::obstacleSightDistance = 0.25;
+float Algorithm::obstacleSightDistance = 0.50;
 float Algorithm::obstacleMinDistance = 0.15;
 float Algorithm::obstacleMinDistanceFactor = 0.003;
 
 //timery
 int Algorithm::calculatingDelay = 10;
 QTimer *Algorithm::calculatingTimer = new QTimer();
+
+//default
+const float Algorithm::defaultMinDistance = 0.20;
+const float Algorithm::defaultBoidMaxVelocity = 0.20;
+const float Algorithm::defaultBoidSightDistance = 0.75;
+const float Algorithm::defaultSightAngle = 0.7 * 3.1416;
+const float Algorithm::defaultNeighboursVelocityFitFactor = 0.02;
+const float Algorithm::defaultNeighboursGroupFitFactor = 0.005;
+const float Algorithm::defaultNeighboursMinDistanceFactor = 0.005;
+const float Algorithm::defaultPredatorMinDistanceFactor = 0.04;
+const float Algorithm::defaultRandomFactor = 0.08;
+const float Algorithm::defaultObstacleMinDistance = 0.15;
+const float Algorithm::defaultPredatorMaxVelocity = 0.25;
 
 Algorithm::Algorithm()
 {
@@ -47,7 +62,22 @@ Algorithm::Algorithm()
 void Algorithm::initialize()
 {
     Algorithm::calculatingTimer->start(Algorithm::calculatingDelay);
+    qsrand(time(NULL));
+}
 
+void Algorithm::setDefaultParameters()
+{
+    Algorithm::minDistance = Algorithm::defaultMinDistance;
+    Algorithm::boidMaxVelocity = Algorithm::defaultBoidMaxVelocity;
+    Algorithm::boidSightDistance = Algorithm::defaultBoidSightDistance;
+    Algorithm::sightAngle = Algorithm::defaultSightAngle;
+    Algorithm::neighboursVelocityFitFactor = Algorithm::defaultNeighboursVelocityFitFactor;
+    Algorithm::neighboursGroupFitFactor = Algorithm::defaultNeighboursGroupFitFactor;
+    Algorithm::neighboursMinDistanceFactor = Algorithm::defaultNeighboursMinDistanceFactor;
+    Algorithm::predatorMinDistanceFactor = Algorithm::defaultPredatorMinDistanceFactor;
+    Algorithm::randomFactor = Algorithm::defaultRandomFactor;
+    Algorithm::obstacleMinDistance = Algorithm::defaultObstacleMinDistance;
+    Algorithm::predatorMaxVelocity = Algorithm::defaultPredatorMaxVelocity;
 }
 
 float Algorithm::getNeighboursVelocityFitFactor()

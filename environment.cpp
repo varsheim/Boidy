@@ -12,6 +12,10 @@
 Environment::Environment(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
+    //inicjalizacja timera liczacego z klasy Algorithm
+    connect(Algorithm::getCalculatingTimer(), SIGNAL(timeout()), this, SLOT(updateCreatures()));
+    Algorithm::initialize();
+
     //*** TWORZENIE PIERWSZYCH BOIDOW ***
     createBoidSwarmOnStart(Algorithm::onStartBoidQuantity,
                            Algorithm::startXPos,
@@ -35,9 +39,6 @@ Environment::Environment(QWidget *parent)
     connect(drawingTimer, SIGNAL(timeout()), this, SLOT(updateEnvironment()));
     drawingTimer->start(drawingDelay);
 
-    //inicjalizacja timera liczacego z klasy Algorithm
-    connect(Algorithm::getCalculatingTimer(), SIGNAL(timeout()), this, SLOT(updateCreatures()));
-    Algorithm::initialize();
 }
 
 Environment::~Environment()
@@ -148,27 +149,48 @@ void Environment::predatorMousePressEvent(QMouseEvent *event)
     }
 }
 
-void Environment::obstacleMousePressEvent(QMouseEvent *event)
+void Environment::mousePressEvent(QMouseEvent *event)
 {
-    Position2D mousePosition;
-    mousePosition.x = (event->x() - 300)/150.0;
-    mousePosition.y = (- event->y() + 300)/150.0;
-
     if(event->button() == Qt::LeftButton){
-        obstacles->append(new Obstacle(mousePosition));
+        mouseLeftDown = true;
     }
     else if(event->button() == Qt::RightButton){
-        if(obstacles->length() > 0){
-            delete obstacles->takeLast();
-        }
+        mouseRightDown = true;
+    }
+    mouseOldPosition.x = (event->x() - 300)/150.0;
+    mouseOldPosition.y = (- event->y() + 300)/150.0;
+
+    if(boidDrawingOn){
+        boidMousePressEvent(event);
+    }
+    else if(predatorDrawingOn){
+        predatorMousePressEvent(event);
     }
 }
 
-void Environment::mousePressEvent(QMouseEvent *event)
+void Environment::mouseReleaseEvent(QMouseEvent *event)
 {
-    boidMousePressEvent(event);
+    if(event->button() == Qt::LeftButton){
+        mouseLeftDown = false;
+    }
+    else if(event->button() == Qt::RightButton){
+        mouseRightDown = false;
+    }
+}
 
-    emit sendNeighboursAmount(obstacles->length(), 0, 0);
+void Environment::switchBoidDrawing(bool checked)
+{
+    boidDrawingOn = checked;
+}
+
+void Environment::switchPredatorDrawing(bool checked)
+{
+    predatorDrawingOn = checked;
+}
+
+void Environment::switchObstacleDrawing(bool checked)
+{
+    obstacleDrawingOn = checked;
 }
 
 QSize Environment::minimumSizeHint() const
@@ -249,17 +271,47 @@ void Environment::updateEnvironment()
         boidSwarm->at(i)->updateVelocity(); //ustawienie velocity = futureVelocity
         boidSwarm->at(i)->updatePosition(height(), width());
     }
-    //wyrzucanie wybranego info na ekran
-//    emit sendNeighboursAmount(Algorithm::getNeighboursVelocityFitFactor(),
-//                              boidSwarm->at(1)->getCloseObstacles().length(),
-//                              boidSwarm->at(2)->getCloseObstacles().length());
 
     for(int i = 0; i < predatorSwarm->length(); i++){
         predatorSwarm->at(i)->updateVelocity(); //ustawienie velocity = futureVelocity
         predatorSwarm->at(i)->updatePosition(height(), width());
     }
 
+    if(obstacleDrawingOn){
+        mouseDrawObstacles(); //timer wykorzystany do rysowania przeszkod
+    }
+
     updateGL(); //rysuj wszystko
+}
+
+void Environment::mouseDrawObstacles()
+{
+    Position2D tempMousePosition;
+    tempMousePosition.x = (this->mapFromGlobal(QCursor::pos()).x() - 300) / 150.0;
+    tempMousePosition.y = (- this->mapFromGlobal(QCursor::pos()).y() + 300) / 150.0;
+
+
+    float tempMouseDistance;
+    tempMouseDistance = qSqrt(qPow((tempMousePosition.x - mouseOldPosition.x), 2) +
+                              qPow((tempMousePosition.y - mouseOldPosition.y), 2));
+
+    if(mouseLeftDown && tempMouseDistance > 0.05){
+        if(tempMousePosition.x > -2 && tempMousePosition.x < 2
+           && tempMousePosition.y > -2 && tempMousePosition.y < 2){
+            mouseOldPosition = tempMousePosition;
+            obstacles->append(new Obstacle(tempMousePosition));
+        }
+    }
+    else if(mouseRightDown){
+        float tempObstacleDistance;
+        for(int i = 0; i < obstacles->length(); i++){
+            tempObstacleDistance = qSqrt(qPow((tempMousePosition.x - obstacles->at(i)->getPosition().x), 2) +
+                                         qPow((tempMousePosition.y - obstacles->at(i)->getPosition().y), 2));
+            if(tempObstacleDistance < 0.1){
+                delete obstacles->takeAt(i);
+            }
+        }
+    }
 }
 
 void Environment::drawObstacles(QList<Obstacle *> *obstacles)
