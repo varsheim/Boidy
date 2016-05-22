@@ -36,7 +36,6 @@ private:
     Velocity2D neighboursAverageVelocity;
     float neighboursAverageDistance;
 
-    int countNeighbours();
     Velocity2D calculateNeighboursAverageVelocity();
     void calculateNeighboursAverageDistance();
     void calculateVelocityBasedOnVelocity(Velocity2D&, Velocity2D, Velocity2D);

@@ -17,7 +17,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    Environment *getEnvironment();
 
 private slots:
     void on_radioBoidButton_toggled(bool checked);

@@ -35,11 +35,6 @@ void MainWindow::setLabels()
     ui->predatorMaxVelocityLabel->setText(QString::number(Algorithm::getPredatorMaxVelocity()));
 }
 
-Environment* MainWindow::getEnvironment()
-{
-    return ui->environment;
-}
-
 void MainWindow::on_radioBoidButton_toggled(bool checked)
 {
     ui->environment->switchBoidDrawing(checked);

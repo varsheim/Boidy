@@ -166,6 +166,9 @@ void Environment::mousePressEvent(QMouseEvent *event)
     else if(predatorDrawingOn){
         predatorMousePressEvent(event);
     }
+    else if(obstacleDrawingOn){
+        obstacles->append(new Obstacle(mouseOldPosition));
+    }
 }
 
 void Environment::mouseReleaseEvent(QMouseEvent *event)

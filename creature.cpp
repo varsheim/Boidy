@@ -150,8 +150,6 @@ void Creature::calculateVelocityBasedOnObstacles(Velocity2D &futureVelocity)
 
         static float tempDistance = 0;
 
-//        tempDistance = qSqrt(qPow(positionDifference.x, 2) +
-//                             qPow(positionDifference.y, 2));
         //odleglosc w trzeciej potedze do polepszenia dzialania
         tempDistance = qPow((qPow(positionDifference.x, 2)
                        + qPow(positionDifference.y, 2)), 1.5);

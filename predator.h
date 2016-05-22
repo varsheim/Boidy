@@ -11,9 +11,6 @@ public:
     Predator(Position2D position, Velocity2D velocity);
     ~Predator();
 
-    void setOffense(bool offense);
-    bool getOffense();
-
     Boid* findTarget(QList<Boid *> *allBoids);
     Velocity2D calculateVelocity();
 

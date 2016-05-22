@@ -4,7 +4,7 @@
 #include <ctime>
 
 const int Algorithm::onStartBoidQuantity = 20;
-const int Algorithm::onStartPredatorQuantity = 2;
+const int Algorithm::onStartPredatorQuantity = 1;
 const int Algorithm::onStartObstacleQuantity = 5;
 const float Algorithm::startXPos = 0.002;
 const float Algorithm::startYPos = 0.002;

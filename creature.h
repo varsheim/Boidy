@@ -12,12 +12,12 @@ public:
     Creature();
     virtual ~Creature();
 
-    void setSize(float size);
-    void setWidth(float width);
-    void setLength(float length);
     float getSize();
     float getWidth();
     float getLength();
+    void setSize(float size);
+    void setWidth(float width);
+    void setLength(float length);
 
     Position2D getPosition();
     Velocity2D getVelocity();
@@ -27,10 +27,6 @@ public:
     QList<Obstacle *> findObstacles(QList<Obstacle *> *allObstacles);
     virtual Velocity2D calculateVelocity() = 0;
     void updateVelocity();
-
-    void setPosition(Position2D);
-    void setVelocity(Velocity2D);
-
     void updatePosition(int, int); //do x,y dodawane sa wartosci vx i vy
 
 protected:
