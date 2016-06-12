@@ -8,23 +8,61 @@
 #include "predator.h"
 #include "obstacle.h"
 
+/*!
+ * \brief The Environment class.
+ * Everything is drawn in the instance of this class.
+ */
 class Environment : public QGLWidget
 {
     Q_OBJECT
 public:
+    /*!
+     * \brief Constructor of the Environment class, initializes starting parameters of the simulation
+     * \param parent pointer to the parent widget
+     */
     explicit Environment(QWidget *parent = 0);
     ~Environment();
 
-    void switchBoidDrawing(bool);
-    void switchPredatorDrawing(bool);
-    void switchObstacleDrawing(bool);
+    /*!
+     * \brief Switches (according to the argument) to boid drawing mode
+     * \param checked bool argument, true - on click boid drawing enabled
+     */
+    void switchBoidDrawing(bool checked);
+    /*!
+     * \brief Switches (according to the argument) to predator drawing mode
+     * \param checked bool argument, true - on click predator drawing enabled
+     */
+    void switchPredatorDrawing(bool checked);
+    /*!
+     * \brief Switches (according to the argument) to obstacles drawing mode
+     * \param checked bool argument, true - on click obstacle drawing enabled
+     */
+    void switchObstacleDrawing(bool checked);
 
 protected:
+    /*!
+     * \brief Sets initial parameters of the OpenGL window
+     */
     void initializeGL();
+    /*!
+     * \brief Virtual method - paints OpenGL window. This method is called mostly when update() is used.
+     */
     void paintGL();
+    /*!
+     * \brief Method called every time OpenGL window is resized. The new size is passed through arguments.
+     * \param width int value representing width of the OpenGL window
+     * \param height int value representing height of the OpenGL window
+     */
     void resizeGL(int width, int height);
-
+    /*!
+     * \brief The property holds the minimum size recommended for the OpenGL window
+     * \return minimum size of the widget (in QSize format)
+     */
     QSize minimumSizeHint() const;
+    /*!
+     * \brief The property holds the recommended size for the widget
+     * \return recommended size of the widget if no layout was defined fot he widget
+     */
     QSize sizeHint() const;
 
 private:
