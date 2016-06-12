@@ -36,13 +36,13 @@ Boid* Predator::findTarget(QList<Boid *> *allBoids)
         tempDistance = qSqrt(qPow(positionDifference.x, 2) +
                              qPow(positionDifference.y, 2));
 
-        if(tempDistance < Algorithm::getPredatorSelfSightDistance()){
+        if(tempDistance < Algorithm::getInstance().getPredatorSelfSightDistance()){
             //jesli boid jest w promieniu mniejszym od sightDistance
             //sprawdzam dalej czy boid znajduje sie w kacie widzenia
             tempVelocityAngle = qAtan2(velocity.yVelocity, velocity.xVelocity);
             tempNeighbourAngle = qAtan2(positionDifference.y, positionDifference.x);
             tempSightAngle = qAbs(tempVelocityAngle - tempNeighbourAngle);
-            if(tempSightAngle < Algorithm::getSightAngle()){
+            if(tempSightAngle < Algorithm::getInstance().getSightAngle()){
                 //jesli boid jest najblizej w sasiedztwie to namierz go
                 if(tempDistance <= minTempDistance){
                     targetBoid = allBoids->at(i);
@@ -62,7 +62,7 @@ void Predator::calculateVelocityBasedOnTarget(Velocity2D &futureVelocity)
     static Position2D positionDifference;
     positionDifference = targetBoid->getPosition() - position;
 
-    futureVelocity += positionDifference * Algorithm::getTargetChaseFactor();
+    futureVelocity += positionDifference * Algorithm::getInstance().getTargetChaseFactor();
 }
 
 Velocity2D Predator::calculateVelocity()
@@ -74,10 +74,10 @@ Velocity2D Predator::calculateVelocity()
     calculateVelocityBasedOnObstacles(futureVelocity);
 
     // *** LOSOWE ZAKLOCENIA ***
-    addRandomNoise(futureVelocity, Algorithm::getPredatorMaxVelocity());
+    addRandomNoise(futureVelocity, Algorithm::getInstance().getPredatorMaxVelocity());
 
     // *** OGRANICZ PREDKOSC ***
-    checkMaxVelocity(Algorithm::getPredatorMaxVelocity());
+    checkMaxVelocity(Algorithm::getInstance().getPredatorMaxVelocity());
 
     return velocity;
 }

@@ -63,13 +63,13 @@ QList<Boid *> Boid::findNeighbours(QList<Boid *> *allBoids)
         positionDifference = allBoids->at(i)->position - position;
         tempDistance = qSqrt(qPow(positionDifference.x, 2) +
                              qPow(positionDifference.y, 2));
-        if(tempDistance < Algorithm::getBoidSightDistance()){
+        if(tempDistance < Algorithm::getInstance().getBoidSightDistance()){
             //jesli boid jest w promieniu rownym sightDistance
             //sprawdzam dalej czy boid znajduje sie w kacie widzenia
             tempVelocityAngle = qAtan2(velocity.yVelocity, velocity.xVelocity);
             tempNeighbourAngle = qAtan2(positionDifference.y, positionDifference.x);
             tempSightAngle = qAbs(tempVelocityAngle - tempNeighbourAngle);
-            if(tempSightAngle < Algorithm::getSightAngle()){
+            if(tempSightAngle < Algorithm::getInstance().getSightAngle()){
                 neighbours->append(allBoids->at(i));
             }
         }
@@ -89,13 +89,13 @@ QList<Predator *> Boid::findPredators(QList<Predator *> *allPredators)
         positionDifference = allPredators->at(i)->getPosition() - position;
         tempDistance = qSqrt(qPow(positionDifference.x, 2) +
                              qPow(positionDifference.y, 2));
-        if(tempDistance < Algorithm::getPredatorSightDistance()){
+        if(tempDistance < Algorithm::getInstance().getPredatorSightDistance()){
             //jesli Predator jest w promieniu rownym sightDistance
             //sprawdzam dalej czy Predator znajduje sie w kacie widzenia
             tempVelocityAngle = qAtan2(velocity.yVelocity, velocity.xVelocity);
             tempNeighbourAngle = qAtan2(positionDifference.y, positionDifference.x);
             tempSightAngle = qAbs(tempVelocityAngle - tempNeighbourAngle);
-            if(tempSightAngle < Algorithm::getPredatorSightAngle()){
+            if(tempSightAngle < Algorithm::getInstance().getPredatorSightAngle()){
                 closePredators->append(allPredators->at(i));
             }
         }
@@ -150,7 +150,7 @@ void Boid::calculateVelocityBasedOnVelocity(Velocity2D &futureVelocity,
         return;
     }
 
-    futureVelocity += (neighboursVelocity - currentVelocity) * Algorithm::getNeighboursVelocityFitFactor();
+    futureVelocity += (neighboursVelocity - currentVelocity) * Algorithm::getInstance().getNeighboursVelocityFitFactor();
 }
 
 void Boid::calculateVelocityBasedOnPosition(Velocity2D &futureVelocity)
@@ -171,7 +171,7 @@ void Boid::calculateVelocityBasedOnPosition(Velocity2D &futureVelocity)
 
         float neighbourDistanceCoefficient = (tempDistance - neighboursAverageDistance) / tempDistance;
 
-        futureVelocity += (positionDifference * neighbourDistanceCoefficient) * Algorithm::getNeighboursGroupFitFactor();
+        futureVelocity += (positionDifference * neighbourDistanceCoefficient) * Algorithm::getInstance().getNeighboursGroupFitFactor();
     }
 }
 
@@ -190,9 +190,9 @@ void Boid::calculateVelocityBasedOnDistance(Velocity2D &futureVelocity)
 
         tempDistance = qSqrt(qPow(positionDifference.x, 2) +
                              qPow(positionDifference.y, 2));
-        float distanceRatio = Algorithm::getMinDistance() / tempDistance;
+        float distanceRatio = Algorithm::getInstance().getMinDistance() / tempDistance;
 
-        futureVelocity -= positionDifference * Algorithm::getNeighboursMinDistanceFactor() * (distanceRatio - 1); //przeciazone operatory
+        futureVelocity -= positionDifference * Algorithm::getInstance().getNeighboursMinDistanceFactor() * (distanceRatio - 1); //przeciazone operatory
     }
 }
 
@@ -211,9 +211,9 @@ void Boid::calculateVelocityBasedOnPredators(Velocity2D &futureVelocity)
 
         tempDistance = qSqrt(qPow(positionDifference.x, 2) +
                              qPow(positionDifference.y, 2));
-        float distanceRatio = Algorithm::getPredatorMinDistance() / tempDistance;
+        float distanceRatio = Algorithm::getInstance().getPredatorMinDistance() / tempDistance;
 
-        futureVelocity -= positionDifference * Algorithm::getPredatorMinDistanceFactor() * (distanceRatio - 1); //przeciazone operatory
+        futureVelocity -= positionDifference * Algorithm::getInstance().getPredatorMinDistanceFactor() * (distanceRatio - 1); //przeciazone operatory
     }
 }
 
@@ -241,10 +241,10 @@ Velocity2D Boid::calculateVelocity()
     calculateVelocityBasedOnObstacles(futureVelocity);
 
     //*** LOSOWE ZAKLOCENIA ***
-    addRandomNoise(futureVelocity, Algorithm::getBoidMaxVelocity());
+    addRandomNoise(futureVelocity, Algorithm::getInstance().getBoidMaxVelocity());
 
     //*** OGRANICZ PREDKOSC ***
-    checkMaxVelocity(Algorithm::getBoidMaxVelocity());
+    checkMaxVelocity(Algorithm::getInstance().getBoidMaxVelocity());
 
     return velocity;
 }

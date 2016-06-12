@@ -13,25 +13,25 @@ Environment::Environment(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
     //inicjalizacja timera liczacego z klasy Algorithm
-    connect(Algorithm::getCalculatingTimer(), SIGNAL(timeout()), this, SLOT(updateCreatures()));
-    Algorithm::initialize();
+    connect(Algorithm::getInstance().getCalculatingTimer(), SIGNAL(timeout()), this, SLOT(updateCreatures()));
+    Algorithm::getInstance().initialize();
 
     //*** TWORZENIE PIERWSZYCH BOIDOW ***
-    createBoidSwarmOnStart(Algorithm::onStartBoidQuantity,
-                           Algorithm::startXPos,
-                           Algorithm::startYPos,
-                           Algorithm::startXVelo,
-                           Algorithm::startYVelo);
+    createBoidSwarmOnStart(Algorithm::getInstance().onStartBoidQuantity,
+                           Algorithm::getInstance().startXPos,
+                           Algorithm::getInstance().startYPos,
+                           Algorithm::getInstance().startXVelo,
+                           Algorithm::getInstance().startYVelo);
 
     //*** TWORZENIE PIERWSZYCH PREDATOROW ***
-    createPredatorSwarmOnStart(Algorithm::onStartPredatorQuantity,
-                               Algorithm::startXPos,
-                               Algorithm::startYPos,
-                               Algorithm::startXVelo,
-                               Algorithm::startYVelo);
+    createPredatorSwarmOnStart(Algorithm::getInstance().onStartPredatorQuantity,
+                               Algorithm::getInstance().startXPos,
+                               Algorithm::getInstance().startYPos,
+                               Algorithm::getInstance().startXVelo,
+                               Algorithm::getInstance().startYVelo);
 
     //*** TWORZENIE PIERWSZYCH PRZESZKOD ***
-    createObstaclesOnStart(Algorithm::onStartObstacleQuantity);
+    createObstaclesOnStart(Algorithm::getInstance().onStartObstacleQuantity);
 
     //timer rysujacy wszystko
     drawingDelay = 10; //co ile ms odswieza mape
@@ -116,8 +116,8 @@ void Environment::boidMousePressEvent(QMouseEvent *event)
     mousePosition.y = (- event->y() + 300)/150.0;
 
     Velocity2D tempVelocity;
-    tempVelocity.xVelocity = Algorithm::startXVelo;
-    tempVelocity.yVelocity = Algorithm::startXVelo;
+    tempVelocity.xVelocity = Algorithm::getInstance().startXVelo;
+    tempVelocity.yVelocity = Algorithm::getInstance().startXVelo;
 
     if(event->button() == Qt::LeftButton){
         boidSwarm->append(new Boid(mousePosition, tempVelocity));
@@ -136,8 +136,8 @@ void Environment::predatorMousePressEvent(QMouseEvent *event)
     mousePosition.y = (- event->y() + 300)/150.0;
 
     Velocity2D tempVelocity;
-    tempVelocity.xVelocity = Algorithm::startXVelo;
-    tempVelocity.yVelocity = Algorithm::startXVelo;
+    tempVelocity.xVelocity = Algorithm::getInstance().startXVelo;
+    tempVelocity.yVelocity = Algorithm::getInstance().startXVelo;
 
     if(event->button() == Qt::LeftButton){
         predatorSwarm->append(new Predator(mousePosition, tempVelocity));
