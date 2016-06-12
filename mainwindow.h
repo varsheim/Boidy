@@ -9,12 +9,18 @@ class Environment;
 namespace Ui {
 class MainWindow;
 }
-
+/*!
+ * \brief The MainWindow class, creates the main window of the program
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
+    /*!
+     * \brief Constructor of the MainWindow class, sets all created labels and sliders
+     * \param parent pointer to the parent widget
+     */
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 

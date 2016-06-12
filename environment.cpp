@@ -333,7 +333,7 @@ void Environment::drawBoidSwarm(QList<Boid *> *boidSwarm)
     for(int i = 0; i < boidSwarm->length(); i++){
         glPointSize(boidSwarm->at(i)->getSize());
         glLineWidth(boidSwarm->at(i)->getWidth());
-        qglColor(Qt::blue);
+        qglColor(Qt::darkGreen);
         glBegin(GL_POINTS);
             glVertex2f(boidSwarm->at(i)->getPosition().x, boidSwarm->at(i)->getPosition().y);
         glEnd();
