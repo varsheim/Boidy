@@ -3,20 +3,29 @@
 
 #include <QtWidgets>
 /*!
- * \brief The Algorithm class. Contains parameters used in program calculations.
+ * \brief The Algorithm class. Contains parameters used in program calculations. Singleton pattern is applied to this class
  * All the variables describe behavior of boids, predators etc.
  */
 class Algorithm
 {
 public:
+    /*!
+     * \brief Returns the only instance of the Algorithm class
+     * \return
+     */
     static Algorithm& getInstance()
     {
         static Algorithm instance;
         return instance;
     }
 
-    //zabezpieczenie przed utworzeniem wielu instancji klasy
+    /*!
+     * \brief Prohibits copying instances of the Algorithm class
+     */
     Algorithm(Algorithm const&) = delete;
+    /*!
+     * \brief Prohibits assigning Alghorithm instances (to disallow copying instances)
+     */
     void operator=(Algorithm const&) = delete;
 
     /*!
