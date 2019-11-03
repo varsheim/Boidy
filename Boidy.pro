@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui opengl
-LIBS += -LC:/Qt/Qt5.5.1/5.5/mingw492_32/lib/libQt5OpenGL.a -lopengl32
+#LIBS += -LC:/Qt/Qt5.5.1/5.5/mingw492_32/lib/libQt5OpenGL.a -lopengl32
 QMAKE_CXXFLAGS += -std=gnu++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets

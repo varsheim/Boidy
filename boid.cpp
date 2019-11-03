@@ -11,7 +11,7 @@ Boid::Boid(Position2D position, Velocity2D velocity)
     neighbours = new QList<Boid *>;
     closePredators = new QList<Predator *>;
 
-    size = 10;
+    size = 0.04;
     width = 4;
     length = 0.07;
 

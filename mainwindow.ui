@@ -39,6 +39,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Lewy przycisk myszy dodaje:</string>
     </property>
@@ -52,6 +57,11 @@
       <height>17</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Boid</string>
     </property>
@@ -64,9 +74,14 @@
      <rect>
       <x>700</x>
       <y>40</y>
-      <width>71</width>
+      <width>81</width>
       <height>17</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Drapieżnik</string>
@@ -81,6 +96,11 @@
       <height>17</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Ściana</string>
     </property>
@@ -93,6 +113,11 @@
       <width>151</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Prawy przycisk myszy usuwa</string>
@@ -107,6 +132,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Minimalna odległość od sąsiadów</string>
     </property>
@@ -119,6 +149,11 @@
       <width>151</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Maksymalna prędkość boidów</string>
@@ -133,6 +168,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Zasięg widzenia boidów</string>
     </property>
@@ -145,6 +185,11 @@
       <width>151</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Kąt widzenia boidów</string>
@@ -159,6 +204,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Uciekanie przed drapieżnikami</string>
     </property>
@@ -171,6 +221,11 @@
       <width>151</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Waga zakłóceń</string>
@@ -185,6 +240,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Minimalna odległość od przeszkód</string>
     </property>
@@ -197,6 +257,11 @@
       <width>181</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Maksymalna prędkość drapieżników</string>
@@ -211,6 +276,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Dopasowanie do prędkości sąsiadów</string>
     </property>
@@ -224,6 +294,11 @@
       <height>16</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Przemieszczanie się do środka grupy</string>
     </property>
@@ -236,6 +311,11 @@
       <width>181</width>
       <height>16</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>Zachowanie minimalnej odległości</string>
@@ -635,6 +715,11 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Powrót do początkowych parametrów</string>
     </property>
@@ -646,7 +731,7 @@
      <x>0</x>
      <y>0</y>
      <width>860</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

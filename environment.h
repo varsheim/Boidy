@@ -78,6 +78,7 @@ private:
     int calculatingDelay;
 
     void draw();
+    void drawFilledCircle(GLfloat x, GLfloat y, GLfloat z, GLfloat radius, GLint numberOfSides);
     void drawBoidSwarm(QList<Boid *> *swarm);
     void drawPredatorSwarm(QList<Predator *> *swarm);
     void drawObstacles(QList<Obstacle *> *obstacles);

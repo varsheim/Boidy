@@ -328,16 +328,49 @@ void Environment::drawObstacles(QList<Obstacle *> *obstacles)
     }
 }
 
+void Environment::drawFilledCircle(GLfloat x, GLfloat y, GLfloat z, GLfloat radius, GLint numberOfSides)
+{
+    int numberOfVertices = numberOfSides + 2;
+
+    GLfloat twicePi = 2.0f * M_PI;
+
+    GLfloat circleVerticesX[numberOfVertices];
+    GLfloat circleVerticesY[numberOfVertices];
+    GLfloat circleVerticesZ[numberOfVertices];
+
+    circleVerticesX[0] = x;
+    circleVerticesY[0] = y;
+    circleVerticesZ[0] = z;
+
+    for (int i = 1; i < numberOfVertices; i++)
+    {
+        circleVerticesX[i] = x + (radius * cos(i * twicePi / numberOfSides));
+        circleVerticesY[i] = y + (radius * sin(i * twicePi / numberOfSides));
+        circleVerticesZ[i] = z;
+    }
+
+    GLfloat allCircleVertices[(numberOfVertices) * 3];
+
+    for (int i = 0; i < numberOfVertices; i++)
+    {
+        allCircleVertices[i * 3] = circleVerticesX[i];
+        allCircleVertices[(i * 3) + 1] = circleVerticesY[i];
+        allCircleVertices[(i * 3) + 2] = circleVerticesZ[i];
+    }
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, allCircleVertices);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, numberOfVertices);
+    glDisableClientState(GL_VERTEX_ARRAY);
+}
+
 void Environment::drawBoidSwarm(QList<Boid *> *boidSwarm)
 {
     for(int i = 0; i < boidSwarm->length(); i++){
-        glPointSize(boidSwarm->at(i)->getSize());
-        glLineWidth(boidSwarm->at(i)->getWidth());
         qglColor(Qt::darkGreen);
-        glBegin(GL_POINTS);
-            glVertex2f(boidSwarm->at(i)->getPosition().x, boidSwarm->at(i)->getPosition().y);
-        glEnd();
+        drawFilledCircle(boidSwarm->at(i)->getPosition().x, boidSwarm->at(i)->getPosition().y, 0, boidSwarm->at(i)->getSize(), 20);
 
+        glLineWidth(boidSwarm->at(i)->getWidth());
         qglColor(Qt::yellow);
         glBegin(GL_LINES);
             glVertex2f(boidSwarm->at(i)->getPosition().x,
@@ -353,13 +386,10 @@ void Environment::drawBoidSwarm(QList<Boid *> *boidSwarm)
 void Environment::drawPredatorSwarm(QList<Predator *> *predatorSwarm)
 {
     for(int i = 0; i < predatorSwarm->length(); i++){
-        glPointSize(predatorSwarm->at(i)->getSize());
-        glLineWidth(predatorSwarm->at(i)->getWidth());
         qglColor(Qt::red);
-        glBegin(GL_POINTS);
-            glVertex2f(predatorSwarm->at(i)->getPosition().x, predatorSwarm->at(i)->getPosition().y);
-        glEnd();
+        drawFilledCircle(predatorSwarm->at(i)->getPosition().x, predatorSwarm->at(i)->getPosition().y, 0, predatorSwarm->at(i)->getSize(), 20);
 
+        glLineWidth(predatorSwarm->at(i)->getWidth());
         qglColor(Qt::red);
         glBegin(GL_LINES);
             glVertex2f(predatorSwarm->at(i)->getPosition().x,

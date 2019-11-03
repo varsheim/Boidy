@@ -4,7 +4,7 @@
 
 Predator::Predator(Position2D position, Velocity2D velocity)
 {
-    size = 12;
+    size = 0.06;
     width = 5;
     length = 0.07;
 
